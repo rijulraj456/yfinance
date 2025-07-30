@@ -1,0 +1,50 @@
+import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Function to fetch stock data and analyze
+def stock_analysis(ticker, start_date, end_date):
+    # Fetch historical stock data
+    stock_data = yf.download(ticker, start=start_date, end=end_date)
+    
+    # Calculate Simple Moving Averages (SMA)
+    stock_data['SMA10'] = stock_data['Close'].rolling(window=10).mean()
+    stock_data['SMA50'] = stock_data['Close'].rolling(window=50).mean()
+    
+    # Generate buy/sell signals
+    stock_data['Signal'] = 0  # 0 = Hold, 1 = Buy, -1 = Sell
+    stock_data.loc[stock_data['SMA10'] > stock_data['SMA50'], 'Signal'] = 1
+    stock_data.loc[stock_data['SMA10'] < stock_data['SMA50'], 'Signal'] = -1
+    
+    # Plot stock price, SMAs, and signals
+    plt.figure(figsize=(12, 6))
+    plt.plot(stock_data['Close'], label=f'{ticker} Close Price', alpha=0.5)
+    plt.plot(stock_data['SMA10'], label='10-Day SMA', color='orange')
+    plt.plot(stock_data['SMA50'], label='50-Day SMA', color='green')
+    
+    # Plot buy signals
+    buy_signals = stock_data[stock_data['Signal'] == 1]
+    plt.scatter(buy_signals.index, buy_signals['Close'], marker='^', color='green', label='Buy Signal', s=100)
+    
+    # Plot sell signals
+    sell_signals = stock_data[stock_data['Signal'] == -1]
+    plt.scatter(sell_signals.index, sell_signals['Close'], marker='v', color='red', label='Sell Signal', s=100)
+    
+    plt.title(f'{ticker} Stock Price with SMA Crossover Strategy')
+    plt.xlabel('Date')
+    plt.ylabel('Price (USD)')
+    plt.legend()
+    plt.grid()
+    plt.show()
+    
+    # Print last few rows of data with signals
+    print(f"\nRecent Data for {ticker}:\n")
+    print(stock_data[['Close', 'SMA10', 'SMA50', 'Signal']].tail())
+
+# User input
+ticker = input("Enter stock ticker (e.g., AAPL for Apple, TSLA for Tesla): ").upper()
+start_date = "2024-01-01"  # Adjustable start date
+end_date = "2025-07-30"    # Up to current date
+
+# Run analysis
+stock_analysis(ticker, start_date, end_date)
