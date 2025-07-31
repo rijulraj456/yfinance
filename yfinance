@@ -30,13 +30,7 @@ def stock_analysis(ticker, start_date, end_date):
     sell_signals = stock_data[stock_data['Signal'] == -1]
     plt.scatter(sell_signals.index, sell_signals['Close'], marker='v', color='red', label='Sell Signal', s=100)
     
-    plt.title(f'{ticker} Stock Price with SMA Crossover Strategy')
-    plt.xlabel('Date')
-    plt.ylabel('Price (USD)')
-    plt.legend()
-    plt.grid()
-    plt.show()
-    
+ 
     # Print last few rows of data with signals
     print(f"\nRecent Data for {ticker}:\n")
     print(stock_data[['Close', 'SMA10', 'SMA50', 'Signal']].tail())
