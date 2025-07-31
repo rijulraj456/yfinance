@@ -1,0 +1,7 @@
+# User input
+ticker = input("Enter stock ticker (e.g., AAPL for Apple, TSLA for Tesla): ").upper()
+start_date = "2024-01-01"  # Adjustable start date
+end_date = "2025-07-30"    # Up to current date
+
+# Run analysis
+stock_analysis(ticker, start_date, end_date)
