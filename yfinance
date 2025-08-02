@@ -26,9 +26,7 @@ def stock_analysis(ticker, start_date, end_date):
     buy_signals = stock_data[stock_data['Signal'] == 1]
     plt.scatter(buy_signals.index, buy_signals['Close'], marker='^', color='green', label='Buy Signal', s=100)
     
-    # Plot sell signals
-    sell_signals = stock_data[stock_data['Signal'] == -1]
-    plt.scatter(sell_signals.index, sell_signals['Close'], marker='v', color='red', label='Sell Signal', s=100)
+   
     
  
     # Print last few rows of data with signals
