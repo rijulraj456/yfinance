@@ -1,0 +1,3 @@
+ # Plot sell signals
+    sell_signals = stock_data[stock_data['Signal'] == -1]
+    plt.scatter(sell_signals.index, sell_signals['Close'], marker='v', color='red', label='Sell Signal', s=100)
